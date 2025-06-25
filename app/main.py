@@ -1,8 +1,9 @@
 from fastapi import FastAPI
+from app.database import db_master
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {str(db_master.engine.url)}
