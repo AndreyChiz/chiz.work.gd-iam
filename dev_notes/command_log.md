@@ -27,4 +27,6 @@ uv run pytest -v
 ```sh
  uv add --dev alembic   
 alembic init -t async alembic
+alembic revision --autogenerate -m "Initial"
+alembic upgrade head 
 ```
