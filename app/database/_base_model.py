@@ -7,9 +7,15 @@ from sqlalchemy.dialects.postgresql import UUID as types_Uuid
 from sqlalchemy.ext.declarative import declared_attr
 
 from . import settings
+from ._utils import camel_case_to_snake_case
 
 
 class CommonAttrsMixin:
+    """Set common fields in models
+
+    use --> set in model __include_uuid_id__: bool = True for adding field
+    """
+
     __include_uuid_id__: bool = False
     __include_created_at__: bool = False
     __include_updated_at__: bool = False
@@ -24,7 +30,7 @@ class CommonAttrsMixin:
             )
 
     @declared_attr
-    def created_at(cls) -> Mapped[datetime.datetime | None]:
+    def created_at(cls) -> Mapped[datetime.datetime]:
         if cls.__include_created_at__:
             return mapped_column(
                 nullable=False,
@@ -33,7 +39,7 @@ class CommonAttrsMixin:
             )
 
     @declared_attr
-    def updated_at(cls) -> Mapped[datetime.datetime | None]:
+    def updated_at(cls) -> Mapped[datetime.datetime]:
         if cls.__include_updated_at__:
             return mapped_column(
                 server_default=None,
@@ -42,22 +48,11 @@ class CommonAttrsMixin:
             )
 
 
-def camel_case_to_snake_case(input_str: str) -> str:
-    chars = []
-    for c_idx, char in enumerate(input_str):
-        if c_idx and char.isupper():
-            nxt_idx = c_idx + 1
-            flag = nxt_idx >= len(input_str) or input_str[nxt_idx].isupper()
-            prev_char = input_str[c_idx - 1]
-            if prev_char.isupper() and flag:
-                pass
-            else:
-                chars.append("_")
-        chars.append(char.lower())
-    return "".join(chars)
+
 
 
 class Base(CommonAttrsMixin, DeclarativeBase):
+    """Base settings for models"""
 
     __abstract__ = True
 
@@ -65,6 +60,7 @@ class Base(CommonAttrsMixin, DeclarativeBase):
 
     @declared_attr
     def __tablename__(cls) -> str:
+        '''Automatic naming table'''
         return camel_case_to_snake_case(cls.__name__)
 
     def __repr__(self) -> str:
@@ -84,6 +80,7 @@ class Base(CommonAttrsMixin, DeclarativeBase):
 
     def to_json(self) -> str:
         import json
+
         return json.dumps(self.to_dict(), default=str)
 
 

@@ -10,6 +10,7 @@ from . import settings
 
 
 class DatabaseMaster:
+    """Main database controller"""
     def __init__(
         self,
         url: str,
