@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
 )
 
-from app.config import settings
+from . import settings
 
 
 class DatabaseMaster:
@@ -47,4 +47,3 @@ db_master = DatabaseMaster(
     pool_size=settings.database.pool_size,
     max_overflow=settings.database.max_overflow,
 )
-
