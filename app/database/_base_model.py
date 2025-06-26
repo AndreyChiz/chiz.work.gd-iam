@@ -48,9 +48,6 @@ class CommonAttrsMixin:
             )
 
 
-
-
-
 class Base(CommonAttrsMixin, DeclarativeBase):
     """Base settings for models"""
 
@@ -60,7 +57,7 @@ class Base(CommonAttrsMixin, DeclarativeBase):
 
     @declared_attr
     def __tablename__(cls) -> str:
-        '''Automatic naming table'''
+        """Automatic naming table"""
         return camel_case_to_snake_case(cls.__name__)
 
     def __repr__(self) -> str:
