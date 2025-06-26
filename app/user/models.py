@@ -1,18 +1,23 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, LargeBinary
+from sqlalchemy import String, LargeBinary, DateTime, Boolean, func
 
 
-
-from database import Base
+from app.database import Base
 
 
 class User(Base):
-    __include_uuid_id__ = True
-    __include_created_at__ = True
-    __include_updated_at__ = True
-
-    
-    username: Mapped[str] = mapped_column(String(32), nullable=False)
-    password: Mapped[LargeBinary] =  mapped_column(LargeBinary)
-
-
+    username: Mapped[String]
+    password: Mapped[LargeBinary]
+    created_at: Mapped[DateTime] = mapped_column(
+        server_default=func.CURRENT_TIMESTAMP(),
+        type_=DateTime(timezone=True),
+    )
+    updated_at: Mapped[DateTime] = mapped_column(
+        nullable=True,
+        server_onupdate=func.CURRENT_TIMESTAMP(),
+        type_=DateTime(timezone=True),
+    )
+    is_active: Mapped[bool] = mapped_column(
+        default=True,
+        nullable=False,
+    )
