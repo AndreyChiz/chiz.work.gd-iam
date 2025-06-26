@@ -16,4 +16,15 @@ uv run fastapi dev
  uv add pydantic-settings
  uv add "sqlalchemy[asyncio]"
  uv add asyncpg  
+ uv add --dev pytest-asyncio
  ```
+```sh
+uv run pytest -v
+```
+
+## Alembic
+
+```sh
+ uv add --dev alembic   
+alembic init -t async alembic
+```
