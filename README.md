@@ -23,8 +23,12 @@ A centralized identity and access management (IAM) microservice that provides:
 
 ## Quickstart
 
+1. Create Postgres database instance with settings like in app/config.py 
+2. Uncomment vars in app/config.py or add .env with each vars
+3. 
 ```bash
-uv venv
+uv sync
 source .venv/bin/activate
-uv pip install -r requirements.txt
-uvicorn app.main:app --reload
+alembic upgrade head 
+uv run fastapi dev
+```
