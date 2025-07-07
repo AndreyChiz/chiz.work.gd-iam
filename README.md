@@ -17,7 +17,7 @@ A centralized identity and access management (IAM) microservice that provides:
 
 ## Requirements
 
-- Python 3.13+
+- Python 3.12+
 - Redis
 - MQTT broker 
 
@@ -28,6 +28,7 @@ A centralized identity and access management (IAM) microservice that provides:
 3. 
 ```bash
 uv sync
+docker-compose up -d
 source .venv/bin/activate
 alembic upgrade head 
 uv run fastapi dev
