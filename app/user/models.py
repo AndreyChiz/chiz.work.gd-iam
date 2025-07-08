@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import LargeBinary, DateTime, func
-
+from sqlalchemy import LargeBinary
 
 from app.database import Base
 
@@ -8,7 +7,7 @@ from app.database import Base
 class User(Base):
 
     __include_id__ = True
-    __id_type__ = "uuid"
+    __id_type__ = "int"
     __include_created_at__ = True
     __include_updated_at__ = True
 

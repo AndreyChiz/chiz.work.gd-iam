@@ -1,6 +1,6 @@
-import datetime
-import uuid
+
 from typing import Any
+from typing import ClassVar
 
 from sqlalchemy import DateTime, Integer, MetaData, event, func, text
 from sqlalchemy.dialects.postgresql import UUID as types_Uuid
@@ -57,22 +57,24 @@ class CommonAttrsMixin:
             raise ValueError(f"Unsupported id type: {cls.__id_type__}")
 
     @declared_attr
-    def created_at(cls) -> Mapped[datetime.datetime | None]:
+    def created_at(cls) -> Mapped[Any]:
         if cls.__include_created_at__:
             return mapped_column(
                 nullable=False,
                 server_default=func.CURRENT_TIMESTAMP(),
                 type_=DateTime(timezone=True),
             )
+        return cast(Mapped[Any], None)
 
     @declared_attr
-    def updated_at(cls) -> Mapped[datetime.datetime | None]:
+    def updated_at(cls) -> Mapped[Any]:
         if cls.__include_updated_at__:
             return mapped_column(
                 server_default=None,
                 server_onupdate=func.CURRENT_TIMESTAMP(),
                 type_=DateTime(timezone=True),
             )
+        return cast(Mapped[Any], None)
 
 
 class Base(
@@ -82,6 +84,7 @@ class Base(
     """Base settings for all models"""
 
     __abstract__ = True
+
 
     metadata = MetaData(naming_convention=settings.database.naming_convention)
 
