@@ -20,6 +20,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 #     os.environ[key] = value
 
 
+class APIConfig(BaseModel):
+    class APIV1(BaseModel):
+        prefix: str = "/api/v1"
+
+    api_v1: APIV1 = APIV1()
+
+
 class DatabaseConfig(BaseModel):
     host: str
     port: int
@@ -53,6 +60,7 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
     )
     database: DatabaseConfig
+    api: APIConfig = APIConfig()
 
 
 settings = Settings()
