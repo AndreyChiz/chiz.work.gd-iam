@@ -27,11 +27,10 @@ A centralized identity and access management (IAM) microservice that provides:
 2. Uncomment vars in app/config.py or add .env with each vars
 3. 
 ```bash
-cp .env.template .env
-uv sync
-docker-compose up -d
-source .venv/bin/activate
-alembic revision --autogenerate -m "init"
-alembic upgrade head 
+cp .env.template .env && \
+uv sync && \
+docker-compose up -d && \
+source .venv/bin/activate && \
+alembic upgrade head && \
 uv run fastapi dev
 ```

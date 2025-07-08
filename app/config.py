@@ -47,6 +47,7 @@ class DatabaseConfig(BaseModel):
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
+        env_file=".env",
         case_sensitive=False,
         env_prefix="APP_CONFIG__",
         env_nested_delimiter="__",
@@ -55,5 +56,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-
