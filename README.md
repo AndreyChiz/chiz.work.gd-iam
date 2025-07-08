@@ -31,7 +31,7 @@ cp .env.template .env
 uv sync
 docker-compose up -d
 source .venv/bin/activate
-alembic autogenerate -m "init"
+alembic revision --autogenerate -m "init"
 alembic upgrade head 
 uv run fastapi dev
 ```
