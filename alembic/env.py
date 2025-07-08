@@ -17,11 +17,8 @@ for module_name in MODELS_MODULES:
     __import__(module_name)
 
 
-
 from app.database import Base
 from app.config import settings
-
-print(settings.database.url)
 
 
 # this is the Alembic Config object, which provides
