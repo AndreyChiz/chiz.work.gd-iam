@@ -6,20 +6,17 @@ from app.database import Base
 
 
 class User(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
+
+    __include_id__ = True
+    __id_type__ = "uuid"
+    __include_created_at__ = True
+    __include_updated_at__ = True
+
     username: Mapped[str] 
     password: Mapped[str] = mapped_column(LargeBinary)
     role: Mapped[str]
-    frmware_acces_group: Mapped[str]
-    created_at: Mapped[DateTime] = mapped_column(
-        server_default=func.CURRENT_TIMESTAMP(),
-        type_=DateTime(timezone=True),
-    )
-    updated_at: Mapped[DateTime] = mapped_column(
-        nullable=True,
-        server_onupdate=func.CURRENT_TIMESTAMP(),
-        type_=DateTime(timezone=True),
-    )
+    frmware_acces_groups: Mapped[str]
+
     is_active: Mapped[bool] = mapped_column(
         default=True,
     )
