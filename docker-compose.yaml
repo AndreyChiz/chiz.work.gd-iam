@@ -4,7 +4,7 @@ services:
     container_name: iam_database
     restart: unless-stopped
     env_file:
-      - .env
+      - app/.env
     environment:
       POSTGRES_DB: ${APP_CONFIG__DATABASE__NAME}
       POSTGRES_USER: ${APP_CONFIG__DATABASE__USER}
