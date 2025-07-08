@@ -1,3 +1,3 @@
-from app.user.models import User
+from app.user import UserModel
 
 '''Connect all models to this'''

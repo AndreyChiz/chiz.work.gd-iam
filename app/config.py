@@ -21,10 +21,18 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class APIConfig(BaseModel):
-    class APIV1(BaseModel):
-        prefix: str = "/api/v1"
+    prefix: str = "/api"  # TODO What is
 
-    api_v1: APIV1 = APIV1()
+    class V1(BaseModel):
+        prefix: str = "/v1"
+
+        class User(BaseModel):
+            prefix: str = "/user"
+            tag: str = "user"
+
+        user: User = User()
+
+    v1: V1 = V1()
 
 
 class DatabaseConfig(BaseModel):
