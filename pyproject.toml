@@ -16,6 +16,7 @@ dev = [
     "alembic[asyncio]>=1.16.2",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.0.0",
+    "ruff>=0.12.2",
 ]
 
 [tool.pytest.ini_options]
