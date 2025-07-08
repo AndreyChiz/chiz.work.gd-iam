@@ -1,20 +1,17 @@
-from typing import Any, AsyncGenerator
+from typing import AsyncGenerator
 
-from sqlalchemy import MetaData, event
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.ext.declarative import declared_attr
-from sqlalchemy.orm import DeclarativeBase
 
 from app.config import settings
 
-
 class DatabaseMaster:
     """Main database controller"""
+
     def __init__(
         self,
         url: str,
@@ -59,50 +56,6 @@ def camel_case_to_snake_case(input_str: str) -> str:
         chars.append(char.lower())
     return "".join(chars)
 
-
-class Base(DeclarativeBase):
-    """Base settings for all models"""
-
-    __abstract__ = True
-
-    metadata = MetaData(naming_convention=settings.database.naming_convention)
-
-    @declared_attr
-    def __tablename__(cls) -> str:
-        """Automatic naming table"""
-        return camel_case_to_snake_case(cls.__name__)
-
-    def __repr__(self) -> str:
-        values = ", ".join(
-            f"{key}={value!r}"
-            for key, value in self.__dict__.items()
-            if not key.startswith("_")
-        )
-        return f"{self.__class__.__name__}({values})"
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            key: value
-            for key, value in self.__dict__.items()
-            if not key.startswith("_")
-        }
-
-    def to_json(self) -> str:
-        import json
-
-        return json.dumps(self.to_dict(), default=str)
-
-
-@event.listens_for(Base, "before_update")
-def receive_before_update(mapper, connection, target):
-    print(f"Updating {target.__tablename__}: {target}")
-
-
-@event.listens_for(Base, "before_insert")
-def receive_before_insert(mapper, connection, target):
-    print(f"Inserting into {target.__tablename__}: {target}")
-
-
 db_master = DatabaseMaster(
     url=settings.database.url,
     echo=settings.database.echo,
@@ -110,5 +63,3 @@ db_master = DatabaseMaster(
     pool_size=settings.database.pool_size,
     max_overflow=settings.database.max_overflow,
 )
-
-    

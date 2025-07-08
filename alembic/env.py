@@ -8,16 +8,8 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 
-# Connect models
-MODELS_MODULES = [
-    "app.user.models",
-]
 
-for module_name in MODELS_MODULES:
-    __import__(module_name)
-
-
-from app.database import Base
+from app.database import Base, base_registry
 from app.config import settings
 
 
