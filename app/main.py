@@ -12,8 +12,13 @@ async def lifespan(app: FastAPI):
     yield
     await db_master.dispose()
 
-app = FastAPI(lifespan=lifespan)
-app.include_router(api_v1_router, prefix=settings.api.api_v1.prefix)
+
+app = FastAPI(lifespan=lifespan, root_path=settings.api.prefix)
+
+app.include_router(
+    api_v1_router,
+    prefix=settings.api.v1.prefix,
+)
 
 
 @app.get("/")
