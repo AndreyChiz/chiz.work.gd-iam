@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import db_master
 
-from .crud import get_all_users, create_user
+from .crud import user_crud
 from .schema import RspUserSchema, RqstCreateUserSchema
 
 
@@ -15,7 +15,7 @@ router = APIRouter()
 async def get_users(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
 ):
-    users = await get_all_users(session=session)
+    users = await user_crud.get_all(session=session)
     return users
 
 
@@ -24,7 +24,7 @@ async def new_user(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     user_create: RqstCreateUserSchema,
 ):
-    user = await create_user(
+    user = await user_crud.create(
         session=session,
         user_create=user_create,
     )
