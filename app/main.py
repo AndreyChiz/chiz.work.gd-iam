@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-
+from fastapi.responses import ORJSONResponse
 from app.database import db_master
 from app.api import api_v1_router
 from app.config import settings
@@ -13,7 +13,11 @@ async def lifespan(app: FastAPI):
     await db_master.dispose()
 
 
-app = FastAPI(lifespan=lifespan, root_path=settings.api.prefix)
+app = FastAPI(
+    lifespan=lifespan,
+    default_response_class=ORJSONResponse,
+    root_path=settings.api.prefix,
+)
 
 app.include_router(
     api_v1_router,
