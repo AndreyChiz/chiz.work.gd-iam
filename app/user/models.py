@@ -11,9 +11,9 @@ class User(Base):
     __include_updated_at__ = True
 
     username: Mapped[str]
-    password: Mapped[str] = mapped_column(LargeBinary)
+    password: Mapped[str] #TODO = mapped_column(LargeBinary)
     role: Mapped[str]
-    frmware_acces_groups: Mapped[str]  # TODO add comments to fields
+    frmware_acces_groups: Mapped[str | None]  # TODO add comments to fields
     # TODO Check nullable marks
 
     is_active: Mapped[bool] = mapped_column(

@@ -70,6 +70,7 @@ class CommonAttrsMixin:
     def updated_at(cls) -> Mapped[Any]:
         if cls.__include_updated_at__:
             return mapped_column(
+                nullable=True,
                 server_default=None,
                 server_onupdate=func.CURRENT_TIMESTAMP(),
                 type_=DateTime(timezone=True),
