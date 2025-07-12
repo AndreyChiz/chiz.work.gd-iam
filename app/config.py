@@ -1,5 +1,9 @@
+from pathlib import Path
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 # import os
@@ -33,6 +37,12 @@ class APIConfig(BaseModel):
         user: User = User()
 
     v1: V1 = V1()
+ 
+
+class AuthJWT(BaseModel):
+    private_key_path: Path =BASE_DIR / "auth" / ".keys" /  "jwt-private.pem"
+    public_key_path: Path = BASE_DIR / "auth" / ".keys" / "jwt-public.pem"
+    algorithm: str = "RS256"
 
 
 class DatabaseConfig(BaseModel):
@@ -67,8 +77,9 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
         env_nested_delimiter="__",
     )
-    database: DatabaseConfig
+    database: DatabaseConfig 
     api: APIConfig = APIConfig()
+    auth_jwt: AuthJWT = AuthJWT()
 
 
-settings = Settings()
+settings = Settings() # type: ignore
