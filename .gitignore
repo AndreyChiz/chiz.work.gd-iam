@@ -143,4 +143,5 @@ backup.dump.gz
 *.tmp
 /db-volume
 /db-data
-
+certs/
+.keys/
