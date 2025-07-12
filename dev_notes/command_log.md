@@ -3,6 +3,7 @@
 - https://docs.astral.sh/uv/guides/integration/fastapi/ - интеграция fastapi --> uv
 - https://vkvideo.ru/video-220000737_456239229 - базовая настройка
 - https://vkvideo.ru/video-220000737_456239249 - регистрация аутентификация ...
+- https://vkvideo.ru/video-220000737_456239168 - jwt
 
 ## Initialization
 

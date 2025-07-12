@@ -1,15 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import LargeBinary
-
-import enum
-from sqlalchemy import Enum
-
+from sqlalchemy import text
 
 from app.database import Base
-
-class UserRole(enum.Enum):
-    ADMIN = "admin"
-    USER = "user"
 
 
 class User(Base):
@@ -18,16 +10,12 @@ class User(Base):
     __include_created_at__ = True
     __include_updated_at__ = True
 
-    username: Mapped[str]
-    password: Mapped[str] #TODO = mapped_column(LargeBinary)
-    role: Mapped[UserRole] = mapped_column(
-        Enum(UserRole),
-        default=UserRole.USER,
-        nullable=False,
-    )
-    frmware_acces_group: Mapped[str | None]  # TODO add comments to fields
-    # TODO Check nullable marks
+    username: Mapped[str] = mapped_column(index=True, unique=True)
+    password: Mapped[str]  # TODO = mapped_column(LargeBinary)
 
     is_active: Mapped[bool] = mapped_column(
-        default=True,
+        server_default=text("true"),
+    )
+    is_admin: Mapped[bool] = mapped_column(
+        server_default=text("false"),
     )
