@@ -31,7 +31,7 @@ class TokenMaster:
 
 class PasswordMAster:
     @staticmethod
-    def hash_password(password: str) -> bytes:
+    def hash(password: str) -> bytes:
         return bc.hashpw(
             password=password.encode(),
             salt=bc.gensalt(),

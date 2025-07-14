@@ -1,3 +1,3 @@
-from .auth import auth_manager
+from .auth_manager import auth_manager
 
 __all__ = ["auth_manager"]
