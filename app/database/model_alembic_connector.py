@@ -6,4 +6,4 @@
 Пример:
     from app.user.external_deps import Base as AlembicAutogenerateUserModelsConnector
 """
-from app.user.external_deps import Base as AlembicAutogenerateUserModelsConnector
+from app.user.external_deps import Base as AlembicAutogenerateUserModelsConnector  # noqa: F401  # for Alembic autogeneration
