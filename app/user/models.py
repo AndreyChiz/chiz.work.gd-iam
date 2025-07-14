@@ -11,7 +11,7 @@ class User(Base):
     __include_updated_at__ = True
 
     username: Mapped[str] = mapped_column(index=True, unique=True)
-    password: Mapped[str]  # TODO = mapped_column(LargeBinary)
+    password_hash: Mapped[bytes]  # TODO = mapped_column(LargeBinary)
 
     is_active: Mapped[bool] = mapped_column(
         server_default=text("true"),
