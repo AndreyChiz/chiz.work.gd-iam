@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import db_master
+from .external_deps import db_master
 
 from .crud import user_crud
 from .schema import RspUserSchema, RqstCreateUserSchema
