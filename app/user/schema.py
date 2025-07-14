@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from typing import Literal, Optional
+from .exceptions import WeakPasswordError
 
 
 from pydantic import (
@@ -45,12 +46,7 @@ class InCreateUserSchema(BaseModel):
     @classmethod
     def valid_password(cls, password: SecretStr) -> SecretStr:
         if not re.match(STRONG_PASSWORD_PATTERN, password.get_secret_value()):
-            raise ValueError(
-                "Пароль должен содержать хотя бы одну цифру и один специальный символ (!, _, @, #, $, %, ^, &, *), "
-                "а также состоять только из латинских букв, цифр и допустимых спецсимволов. "
-                "Длина — от 6 до 128 символов."
-            )
-
+            raise WeakPasswordError()
         return password
 
 
