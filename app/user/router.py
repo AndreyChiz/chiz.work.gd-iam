@@ -34,6 +34,7 @@ async def create_new_user(
     user = await user_crud.create(
         session=session,
         username=new_user.username,
-        password_hash=auth_manager.password.hash(new_user.password),
+        password_hash=auth_manager.password.hash(new_user.password.get_secret_value()),
     )
+    
     return user

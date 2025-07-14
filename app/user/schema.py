@@ -1,8 +1,19 @@
+import re
 from datetime import datetime
 from typing import Literal, Optional
 
 
-from pydantic import BaseModel, field_validator, Field
+from pydantic import (
+    BaseModel,
+    field_validator,
+    Field,
+    SecretStr,
+)
+
+
+STRONG_PASSWORD_PATTERN = re.compile(
+    r"^(?=.*[\d])(?=.*[!_@#$%^&*])[\w!_@#$%^&*]{6,128}$"
+)
 
 
 class InCreateUserSchema(BaseModel):
@@ -10,7 +21,14 @@ class InCreateUserSchema(BaseModel):
         description="Имя пользователя: только ASCII-символы, без пробелов. Приводится к нижнему регистру.",
         examples=["john_doe"],
     )
-    password: str
+    password: SecretStr = Field(
+        min_length=6,
+        max_length=128,
+        description="""Пароль должен содержать хотя бы одну цифру,
+        один специальный символ, состоять только из латинских букв,
+        цифр и допустимых спецсимволов, длина — от 6 до 128 символов.""",
+        examples=["Qwe_1234", "Passw0rd!"],
+    )
 
     @field_validator("username")
     @classmethod
@@ -22,6 +40,18 @@ class InCreateUserSchema(BaseModel):
             raise ValueError("Username должен содержать только ASCII-символы")
 
         return value.strip().lower()
+
+    @field_validator("password", mode="after")
+    @classmethod
+    def valid_password(cls, password: SecretStr) -> SecretStr:
+        if not re.match(STRONG_PASSWORD_PATTERN, password.get_secret_value()):
+            raise ValueError(
+                "Пароль должен содержать хотя бы одну цифру и один специальный символ (!, _, @, #, $, %, ^, &, *), "
+                "а также состоять только из латинских букв, цифр и допустимых спецсимволов. "
+                "Длина — от 6 до 128 символов."
+            )
+
+        return password
 
 
 class OutUserSchema(BaseModel):

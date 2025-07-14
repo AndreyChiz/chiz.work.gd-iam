@@ -1,6 +1,3 @@
-from typing import Sequence
-
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, asc, desc
 from .models import User
@@ -14,7 +11,7 @@ class UserCRUD:
         filters = []
 
         if query.id is not None:
-             filters.append(User.id == query.id)
+            filters.append(User.id == query.id)
         if query.username:
             filters.append(User.username.ilike(f"%{query.username}%"))
         if query.is_active is not None:
@@ -39,12 +36,6 @@ class UserCRUD:
 
         result = await session.execute(stmt)
         return result.scalars().all()
-
-
-
-
-
-
 
     async def create(
         self,
