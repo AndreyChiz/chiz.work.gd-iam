@@ -7,6 +7,8 @@ from app.database import db_master
 from .crud import user_crud
 from .schema import RspUserSchema, RqstCreateUserSchema
 
+from app.auth import auth_manager # TODO move
+
 
 router = APIRouter()
 
@@ -20,12 +22,13 @@ async def get_users(
 
 
 @router.post("", response_model=RspUserSchema)
-async def new_user(
+async def create_new_user(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
-    user_create: RqstCreateUserSchema,
+    new_user: RqstCreateUserSchema,
 ):
     user = await user_crud.create(
         session=session,
-        user_create=user_create,
+        username = new_user.username,
+        password_hash=auth_manager.password.hash(new_user.password)
     )
     return user
