@@ -1,7 +1,8 @@
-import sys
-import os
 
-# Добавляем корень проекта в sys.path
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if root_dir not in sys.path:
-    sys.path.insert(0, root_dir)
+import pytest
+from httpx import AsyncClient
+
+@pytest.fixture
+async def async_client():
+    async with AsyncClient(base_url="http://localhost:8000/") as ac:
+        yield ac
