@@ -1,4 +1,4 @@
-from app.database import Base
+from app.database import Base, db_master
 from app.exceptions import BaseAppException, BaseErrorCode
 from app.auth import auth_manager
 
@@ -15,7 +15,8 @@ from app.auth import auth_manager
 """
 __all__ = [
     "Base",  # Настроенный внешний базовый класс sql - DeclarativeBase -->>  он же используется в app.database
-    "auth_manager",  # настроеный внешний генератор sqla сессий
+    "db_master",
+    "auth_manager", 
     "BaseAppException",  # Настроенный внешний  базовый  - HTTPException
     "BaseErrorCode", # Пользовательские сообщения
 ]
