@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .external_deps import db_master
 
 from .crud import user_crud
-from .schema import RspUserSchema, RqstCreateUserSchema
+from .schema import InCreateUserSchema, OutUserSchema, UserQueryParams
+
 
 from .external_deps import auth_manager
 
@@ -13,22 +14,22 @@ from .external_deps import auth_manager
 router = APIRouter()
 
 
-@router.get("", response_model=list[RspUserSchema])
+@router.get("", response_model=list[OutUserSchema])
 async def get_users(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
+    query: Annotated[UserQueryParams, Depends()],
 ):
-    users = await user_crud.get_all(session=session)
-    return users
+    return await user_crud.get_all(session=session, query=query)
 
 
 @router.post(
     "",
     status_code=status.HTTP_201_CREATED,
-    response_model=RspUserSchema,
+    response_model=OutUserSchema,
 )
 async def create_new_user(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
-    new_user: RqstCreateUserSchema,
+    new_user: InCreateUserSchema,
 ):
     user = await user_crud.create(
         session=session,

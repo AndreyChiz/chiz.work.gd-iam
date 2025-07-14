@@ -24,12 +24,9 @@ app = FastAPI(
 # Routes
 # v1
 api_v1_router = APIRouter()
-app.include_router(
-    api_v1_router,
-    prefix=settings.api.v1.prefix,
-)
 
-#/users
+
+# /users
 api_v1_router.include_router(
     user_router,
     prefix=settings.api.v1.user.prefix,
@@ -37,8 +34,10 @@ api_v1_router.include_router(
 )
 
 
-
-
+app.include_router(
+    api_v1_router,
+    prefix=settings.api.v1.prefix,
+)
 
 
 @api_v1_router.get("/hello")
