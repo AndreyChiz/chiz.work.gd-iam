@@ -39,8 +39,8 @@ class APIConfig(BaseModel):
     v1: V1 = V1()
  
 
-class AuthJWT(BaseModel):
-    private_key_path: Path =BASE_DIR / "auth" / ".keys" /  "jwt-private.pem"
+class AuthConfig(BaseModel):
+    private_key_path: Path = BASE_DIR / "auth" / ".keys" / "jwt-private.pem"
     public_key_path: Path = BASE_DIR / "auth" / ".keys" / "jwt-public.pem"
     algorithm: str = "RS256"
 
@@ -77,9 +77,9 @@ class Settings(BaseSettings):
         env_prefix="APP_CONFIG__",
         env_nested_delimiter="__",
     )
-    database: DatabaseConfig 
+    database: DatabaseConfig
     api: APIConfig = APIConfig()
-    auth_jwt: AuthJWT = AuthJWT()
+    auth: AuthConfig = AuthConfig()
 
 
-settings = Settings() # type: ignore
+settings = Settings()  # type: ignore
