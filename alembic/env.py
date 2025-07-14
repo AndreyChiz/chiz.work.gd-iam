@@ -9,7 +9,7 @@ from alembic import context
 
 
 
-from app.database import Base, models_registry
+from app.database import Base, model_alembic_connector
 from app.config import settings
 
 

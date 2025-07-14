@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import db_master
@@ -7,7 +7,7 @@ from app.database import db_master
 from .crud import user_crud
 from .schema import RspUserSchema, RqstCreateUserSchema
 
-from app.auth import auth_manager # TODO move
+from .external_deps import auth_manager
 
 
 router = APIRouter()
@@ -21,14 +21,18 @@ async def get_users(
     return users
 
 
-@router.post("", response_model=RspUserSchema)
+@router.post(
+    "",
+    status_code=status.HTTP_201_CREATED,
+    response_model=RspUserSchema,
+)
 async def create_new_user(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     new_user: RqstCreateUserSchema,
 ):
     user = await user_crud.create(
         session=session,
-        username = new_user.username,
-        password_hash=auth_manager.password.hash(new_user.password)
+        username=new_user.username,
+        password_hash=auth_manager.password.hash(new_user.password),
     )
     return user
