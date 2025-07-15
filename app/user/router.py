@@ -19,7 +19,7 @@ async def get_users(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     query: Annotated[UserQueryParams, Depends()],
 ):
-    return await user_crud.get_all(session=session, query=query)
+    return await user_crud.get(session=session, query=query)
 
 
 @router.post(
@@ -36,5 +36,5 @@ async def create_new_user(
         username=new_user.username,
         password_hash=auth_manager.password.hash(new_user.password.get_secret_value()),
     )
-    
+
     return user

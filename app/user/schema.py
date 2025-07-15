@@ -60,6 +60,8 @@ class OutUserSchema(BaseModel):
 
 
 class UserQueryParams(BaseModel):
+    """Схема фиьтра, сортировки, пагинации"""
+
     id: Optional[int] = None
     username: Optional[str] = None
     is_active: Optional[bool] = None

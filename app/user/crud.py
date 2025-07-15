@@ -7,7 +7,11 @@ from .schema import UserQueryParams
 class UserCRUD:
     """Класс для работы с пользователями"""
 
-    async def get_all(self, session: AsyncSession, query: UserQueryParams):
+    async def get(
+        self,
+        session: AsyncSession,
+        query: UserQueryParams,
+    ):
         filters = []
 
         if query.id is not None:
