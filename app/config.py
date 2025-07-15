@@ -34,7 +34,12 @@ class APIConfig(BaseModel):
             prefix: str = "/user"
             tag: str = "user"
 
+        class Auth(BaseModel):
+            prefix: str = "/auth"
+            tag: str = "auth"
+
         user: User = User()
+        auth: Auth = Auth()
 
     v1: V1 = V1()
  
