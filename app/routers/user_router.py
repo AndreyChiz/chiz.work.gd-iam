@@ -12,7 +12,7 @@ from app.services.user import (
 )
 
 
-from app.services.auth import auth_manager
+from app.services.auth import auth_service
 
 
 router = APIRouter()
@@ -38,7 +38,7 @@ async def create_new_user(
     user = await user_crud.create(
         session=session,
         username=new_user.username,
-        password_hash=auth_manager.password.hash(new_user.password.get_secret_value()),
+        password_hash=auth_service.password.hash(new_user.password.get_secret_value()),
     )
 
     return user

@@ -45,13 +45,10 @@ class PasswordMAster:
         )
 
 
-class AuthManager:
+class AuthService:
     def __init__(self) -> None:
         self.token = TokenMaster()
         self.password = PasswordMAster()
 
-  
 
-
-
-auth_manager = AuthManager()
+auth_service = AuthService()
