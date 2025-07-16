@@ -7,6 +7,7 @@ from app.database import db_master
 from app.services.auth import (
     LoginForm,
     UnautorisedException,
+    UnactiveException,
     TokenResponse,
     auth_service,
 )
@@ -29,9 +30,10 @@ async def login(
     if not (
         (user := await user_crud.get(session, username))
         and (auth_service.password.validate_password(password, user.password_hash))
-        and (user.is_active)
     ):
         raise UnautorisedException
+    if not user.is_active:
+        raise   
 
     access_token = auth_service.get_jwt_token(user)
 
