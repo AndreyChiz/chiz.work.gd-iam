@@ -10,7 +10,7 @@ from alembic import context
 
 
 from app.database import Base 
-from app.user import UserModel  # noqa: F401
+from app.services.user import UserModel  # noqa: F401
 from app.config import settings
 
 
