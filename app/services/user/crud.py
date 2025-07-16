@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, asc, desc
-from .models import User
+from app.models import User
 from .schema import UserQueryParams
 
 
@@ -8,6 +8,14 @@ class UserCRUD:
     """Класс для работы с пользователями"""
 
     async def get(
+        self, session: AsyncSession, username: str
+    ) -> User | None:
+        stmt = select(User).where(User.username == username)
+        result = await session.execute(stmt)
+        user = result.scalar_one_or_none()
+        return user
+
+    async def get_many(
         self,
         session: AsyncSession,
         query: UserQueryParams,

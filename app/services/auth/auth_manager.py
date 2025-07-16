@@ -50,5 +50,8 @@ class AuthManager:
         self.token = TokenMaster()
         self.password = PasswordMAster()
 
+  
+
+
 
 auth_manager = AuthManager()

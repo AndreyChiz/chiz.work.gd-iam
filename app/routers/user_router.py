@@ -23,7 +23,7 @@ async def get_users(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     query: Annotated[UserQueryParams, Depends()],
 ):
-    return await user_crud.get(session=session, query=query)
+    return await user_crud.get_many(session=session, query=query)
 
 
 @router.post(
