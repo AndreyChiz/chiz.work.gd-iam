@@ -5,8 +5,8 @@ from fastapi.responses import ORJSONResponse
 from app.database import db_master
 
 from app.config import settings
-from app.user import router as user_router
-from app.auth import router as auth_router
+from app.routers import user_router, auth_router
+
 
 
 @asynccontextmanager
@@ -29,8 +29,6 @@ api_v1_router = APIRouter()
 # /user/login
 user_router.include_router(
     auth_router,
-    prefix=settings.api.v1.auth.prefix,
-    tags=[settings.api.v1.auth.tag],
 )
 
 # /users
@@ -39,9 +37,6 @@ api_v1_router.include_router(
     prefix=settings.api.v1.user.prefix,
     tags=[settings.api.v1.user.tag],
 )
-
-
-
 
 
 app.include_router(

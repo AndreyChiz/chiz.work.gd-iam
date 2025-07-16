@@ -9,7 +9,8 @@ from alembic import context
 
 
 
-from app.database import Base, model_alembic_connector  # noqa: F401  # for Alembic autogeneration
+from app.database import Base 
+from app.user import UserModel  # noqa: F401
 from app.config import settings
 
 

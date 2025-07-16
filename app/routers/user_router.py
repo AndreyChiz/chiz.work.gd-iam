@@ -2,13 +2,17 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .external_deps import db_master
+from app.database import db_master
 
-from .crud import user_crud
-from .schema import InCreateUserSchema, OutUserSchema, UserQueryParams
+from app.services.user import (
+    user_crud,
+    InCreateUserSchema,
+    OutUserSchema,
+    UserQueryParams,
+)
 
 
-from .external_deps import auth_manager
+from app.services.auth import auth_manager
 
 
 router = APIRouter()

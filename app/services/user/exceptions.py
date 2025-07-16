@@ -1,4 +1,4 @@
-from .external_deps import BaseAppException, BaseErrorCode  
+from app.exceptions import BaseAppException, BaseErrorCode  
 from fastapi import status
 
 

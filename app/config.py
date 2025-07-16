@@ -34,19 +34,17 @@ class APIConfig(BaseModel):
             prefix: str = "/user"
             tag: str = "user"
 
-        class Auth(BaseModel):
-            prefix: str = "/auth"
-            tag: str = "auth"
+
 
         user: User = User()
-        auth: Auth = Auth()
+
 
     v1: V1 = V1()
  
 
 class AuthConfig(BaseModel):
-    private_key_path: Path = BASE_DIR / "auth" / ".keys" / "jwt-private.pem"
-    public_key_path: Path = BASE_DIR / "auth" / ".keys" / "jwt-public.pem"
+    private_key_path: Path = BASE_DIR / "services" / "auth" / ".keys" / "jwt-private.pem"
+    public_key_path: Path = BASE_DIR / "services" / "auth" / ".keys" / "jwt-public.pem"
     algorithm: str = "RS256"
 
 
