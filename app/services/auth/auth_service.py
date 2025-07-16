@@ -1,6 +1,8 @@
+from datetime import datetime, timedelta, timezone
 import jwt
 import bcrypt as bc
 from app.config import settings
+from app.models import User
 
 
 class TokenMaster:
@@ -49,6 +51,29 @@ class AuthService:
     def __init__(self) -> None:
         self.token = TokenMaster()
         self.password = PasswordMAster()
+
+    def get_jwt_token(
+        self,
+        user: User,
+        expire_minutes: int = settings.auth.access_token_expire_minets,
+        expire_timedelta: timedelta | None = None
+    ):
+
+        now = datetime.now(timezone.utc)
+        if expire_timedelta:
+            expire = now+expire_timedelta
+        else:
+            expire = now+ timedelta(minutes=expire_minutes)
+
+        return self.token.encode_payload(
+            data={
+                "sub": user.id,
+                "username": user.username,
+                "iat": now,
+                "exp": expire,
+                
+            }
+        )
 
 
 auth_service = AuthService()

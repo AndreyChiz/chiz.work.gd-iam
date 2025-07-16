@@ -46,6 +46,7 @@ class AuthConfig(BaseModel):
     private_key_path: Path = BASE_DIR / "services" / "auth" / ".keys" / "jwt-private.pem"
     public_key_path: Path = BASE_DIR / "services" / "auth" / ".keys" / "jwt-public.pem"
     algorithm: str = "RS256"
+    access_token_expire_minets: int = 3
 
 
 class DatabaseConfig(BaseModel):

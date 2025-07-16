@@ -7,7 +7,7 @@ from app.database import db_master
 from app.services.auth import (
     LoginForm,
     UnautorisedException,
-    # TokenResponse,
+    TokenResponse,
     auth_service,
 )
 from app.services.user import user_crud
@@ -18,7 +18,7 @@ router = APIRouter()
 
 @router.post(
     "/login",
-    # response_model=TokenResponse,
+    response_model=TokenResponse,
 )
 async def login(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
@@ -33,4 +33,6 @@ async def login(
     ):
         raise UnautorisedException
 
-    return user
+    access_token = auth_service.get_jwt_token(user)
+
+    return TokenResponse(access_token=access_token)
