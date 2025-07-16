@@ -89,7 +89,7 @@ class Base(
 
     metadata = MetaData(naming_convention=settings.database.naming_convention)
 
-    @declared_attr
+    @declared_attr # type: ignore
     def __tablename__(cls) -> str:
         """Automatic naming table"""
         return camel_case_to_snake_case(cls.__name__)
