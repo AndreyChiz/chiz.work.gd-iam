@@ -33,7 +33,7 @@ async def login(
     ):
         raise UnautorisedException
     if not user.is_active:
-        raise   
+        raise UnactiveException
 
     access_token = auth_service.get_jwt_token(user)
 
