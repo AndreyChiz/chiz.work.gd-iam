@@ -27,8 +27,10 @@ app = FastAPI(
 api_v1_router = APIRouter()
 
 # /user/login
-user_router.include_router(
+api_v1_router.include_router(
     auth_router,
+    prefix=settings.api.v1.auth.prefix,
+    tags=[settings.api.v1.auth.tag],
 )
 
 # /users

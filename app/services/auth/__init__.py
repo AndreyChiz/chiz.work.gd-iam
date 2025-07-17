@@ -1,12 +1,20 @@
-from .schema import LoginForm, TokenResponse
-from .exceptions import UnautorisedException, UnactiveException
+from .schema import (
+    LoginFormSchema,
+    TokenResponseSchema,
+    InRegisterSchema,
+    OutRegisterSchema,
+)
+from .exceptions import UnautorisedException, UnactiveException, AlreadyExistException
 from .auth_service import auth_service
 
 
 __all__ = [
-    "LoginForm",
+    "LoginFormSchema",
     "UnautorisedException",
     "UnactiveException",
-    "TokenResponse",
+    "AlreadyExistException",
+    "TokenResponseSchema",
+    "InRegisterSchema",
+    "OutRegisterSchema",
     "auth_service",
 ]

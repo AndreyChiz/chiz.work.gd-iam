@@ -10,12 +10,6 @@ class UserErrorCode(BaseErrorCode):
             "Длина — от 6 до 128 символов."
     )
 
-
-class WeakPasswordError(BaseAppException):
-    '''Слабый праоль'''
-    STATUS_CODE = status.HTTP_422_UNPROCESSABLE_ENTITY
-    DETAIL = UserErrorCode.WEAK_PASSWORD    
-
 class UserAlreadyExist(BaseAppException):
     STATUS_CODE = status.HTTP_400_BAD_REQUEST
     DETAIL = UserErrorCode.USER_ALLREADY_EXIST

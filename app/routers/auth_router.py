@@ -1,14 +1,18 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 
 from app.database import db_master
 from app.services.auth import (
-    LoginForm,
+    LoginFormSchema,
     UnautorisedException,
     UnactiveException,
-    TokenResponse,
+    AlreadyExistException,
+    InRegisterSchema,
+    OutRegisterSchema,
+    TokenResponseSchema,
     auth_service,
 )
 from app.services.user import user_crud
@@ -18,12 +22,33 @@ router = APIRouter()
 
 
 @router.post(
+    "/register",
+    status_code=status.HTTP_201_CREATED,
+    response_model=OutRegisterSchema,
+)
+async def register_user(
+    session: Annotated[AsyncSession, Depends(db_master.session_getter)],
+    new_user: InRegisterSchema,
+):
+    try:
+        user = await user_crud.create(
+            session=session,
+            username=new_user.username,
+            password_hash=auth_service.password.hash(new_user.password.get_secret_value()),
+        )
+    except IntegrityError:
+        raise AlreadyExistException
+
+    return user
+
+
+@router.post(
     "/login",
-    response_model=TokenResponse,
+    response_model=TokenResponseSchema,
 )
 async def login(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
-    form: LoginForm = Depends(),
+    form: LoginFormSchema = Depends(),
 ):
     username = form.username
     password = form.password
@@ -37,4 +62,4 @@ async def login(
 
     access_token = auth_service.get_jwt_token(user)
 
-    return TokenResponse(access_token=access_token)
+    return TokenResponseSchema(access_token=access_token)

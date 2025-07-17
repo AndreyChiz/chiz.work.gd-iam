@@ -1,14 +1,9 @@
-
-
-
-from .schema import InCreateUserSchema, OutUserSchema, UserQueryParams
+from .schema import UserQueryParams, OutGetUserSchema
 from .crud import user_crud
 
 
 __all__ = (
-
-    "InCreateUserSchema",
-    "OutUserSchema",
     "UserQueryParams",
+    "OutGetUserSchema",
     "user_crud",
 )
