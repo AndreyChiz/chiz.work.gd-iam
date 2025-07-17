@@ -7,9 +7,7 @@ from .schema import UserQueryParams
 class UserCRUD:
     """Класс для работы с пользователями"""
 
-    async def get(
-        self, session: AsyncSession, username: str
-    ) -> User | None:
+    async def get(self, session: AsyncSession, username: str) -> User | None:
         stmt = select(User).where(User.username == username)
         result = await session.execute(stmt)
         user = result.scalar_one_or_none()

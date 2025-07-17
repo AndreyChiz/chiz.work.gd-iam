@@ -8,7 +8,7 @@ from pydantic import (
     field_validator,
 )
 
-from .exceptions import WeakPasswordError
+from app.exceptions import WeakPasswordError
 
 STRONG_PASSWORD_PATTERN = re.compile(
     r"^(?=.*[\d])(?=.*[!_@#$%^&*])[\w!_@#$%^&*]{6,128}$"

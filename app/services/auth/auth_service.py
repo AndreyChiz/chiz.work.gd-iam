@@ -52,26 +52,24 @@ class AuthService:
         self.token = TokenMaster()
         self.password = PasswordMAster()
 
-    def get_jwt_token(
+    def create_jwt_token(
         self,
         user: User,
         expire_minutes: int = settings.auth.access_token_expire_minets,
-        expire_timedelta: timedelta | None = None
+        expire_timedelta: timedelta | None = None,
     ):
-
         now = datetime.now(timezone.utc)
         if expire_timedelta:
-            expire = now+expire_timedelta
+            expire = now + expire_timedelta
         else:
-            expire = now+ timedelta(minutes=expire_minutes)
+            expire = now + timedelta(minutes=expire_minutes)
 
         return self.token.encode_payload(
             data={
-                "sub": user.id,
+                "sub": str(user.id),
                 "username": user.username,
                 "iat": now,
                 "exp": expire,
-                
             }
         )
 

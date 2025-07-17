@@ -7,15 +7,17 @@ from sqlalchemy.exc import IntegrityError
 from app.database import db_master
 from app.services.auth import (
     LoginFormSchema,
-    UnautorisedException,
-    UnactiveException,
-    AlreadyExistException,
     InRegisterSchema,
     OutRegisterSchema,
     TokenResponseSchema,
     auth_service,
 )
 from app.services.user import user_crud
+from app.exceptions import (
+    UnautorisedException,
+    UnactiveException,
+    AlreadyExistException,
+)
 
 
 router = APIRouter()
@@ -34,7 +36,9 @@ async def register_user(
         user = await user_crud.create(
             session=session,
             username=new_user.username,
-            password_hash=auth_service.password.hash(new_user.password.get_secret_value()),
+            password_hash=auth_service.password.hash(
+                new_user.password.get_secret_value()
+            ),
         )
     except IntegrityError:
         raise AlreadyExistException
@@ -60,6 +64,6 @@ async def login(
     if not user.is_active:
         raise UnactiveException
 
-    access_token = auth_service.get_jwt_token(user)
+    access_token = auth_service.create_jwt_token(user)
 
     return TokenResponseSchema(access_token=access_token)
