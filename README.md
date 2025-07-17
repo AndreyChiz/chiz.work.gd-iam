@@ -32,5 +32,8 @@ uv sync && \
 docker-compose up -d && \
 source .venv/bin/activate && \
 alembic upgrade head && \
+mkdir /app.services/app/.keys
+openssl genrsa -out /app.services/app/.keys/jwt-private.pem 2048
+openssl rsa -in jwt-private.pem -outform PEM -pubout -out /app.services/app/.keys/jwt-public.pem
 uv run fastapi dev
 ```
