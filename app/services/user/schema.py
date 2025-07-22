@@ -7,6 +7,7 @@ from pydantic import (
     Field,
 )
 
+
 class OutGetUserSchema(BaseModel):
     id: int
     username: str
@@ -16,17 +17,17 @@ class OutGetUserSchema(BaseModel):
     is_admin: bool
 
 
-class UserQueryParams(BaseModel):
-    """Схема фиьтра, сортировки, пагинации"""
+class UserPaginationDep(BaseModel):
+    limit: int = Field(default=10, ge=1, le=100)
+    offset: int = Field(default=0, ge=0)
+    order_by: Literal["id", "username", "created_at"] = "id"
+    order_dir: Literal["asc", "desc"] = "asc"
 
+
+class UserFilterDep(BaseModel):
     id: Optional[int] = None
     username: Optional[str] = None
     is_active: Optional[bool] = None
     is_admin: Optional[bool] = None
     created_from: Optional[datetime] = None
     created_to: Optional[datetime] = None
-
-    limit: int = Field(default=10, ge=1, le=100)
-    offset: int = Field(default=0, ge=0)
-    order_by: Literal["id", "username", "created_at"] = "id"
-    order_dir: Literal["asc", "desc"] = "asc"

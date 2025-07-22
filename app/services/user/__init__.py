@@ -1,9 +1,10 @@
-from .schema import UserQueryParams, OutGetUserSchema
+from .schema import OutGetUserSchema, UserFilterDep, UserPaginationDep
 from .crud import user_crud
 
 
 __all__ = (
-    "UserQueryParams",
+    "UserFilterDep",
+    "UserPaginationDep",
     "OutGetUserSchema",
     "user_crud",
 )

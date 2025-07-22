@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, asc, desc
 from app.models import User
-from .schema import UserQueryParams
+from .schema import UserFilterDep, UserPaginationDep
 
 
 class UserCRUD:
@@ -16,32 +16,34 @@ class UserCRUD:
     async def get_many(
         self,
         session: AsyncSession,
-        query: UserQueryParams,
+        
+        user_filters: UserFilterDep,
+        user_pagination: UserPaginationDep,
     ):
         filters = []
 
-        if query.id is not None:
-            filters.append(User.id == query.id)
-        if query.username:
-            filters.append(User.username.ilike(f"%{query.username}%"))
-        if query.is_active is not None:
-            filters.append(User.is_active == query.is_active)
-        if query.is_admin is not None:
-            filters.append(User.is_admin == query.is_admin)
-        if query.created_from:
-            filters.append(User.created_at >= query.created_from)
-        if query.created_to:
-            filters.append(User.created_at <= query.created_to)
+        if user_filters.id is not None:
+            filters.append(User.id == user_filters.id)
+        if user_filters.username:
+            filters.append(User.username.ilike(f"%{user_filters.username}%"))
+        if user_filters.is_active is not None:
+            filters.append(User.is_active == user_filters.is_active)
+        if user_filters.is_admin is not None:
+            filters.append(User.is_admin == user_filters.is_admin)
+        if user_filters.created_from:
+            filters.append(User.created_at >= user_filters.created_from)
+        if user_filters.created_to:
+            filters.append(User.created_at <= user_filters.created_to)
 
-        order_column = getattr(User, query.order_by)
-        order_func = asc if query.order_dir == "asc" else desc
+        order_column = getattr(User, user_pagination.order_by)
+        order_func = asc if user_pagination.order_dir == "asc" else desc
 
         stmt = (
             select(User)
             .where(and_(*filters))
             .order_by(order_func(order_column))
-            .offset(query.offset)
-            .limit(query.limit)
+            .offset(user_pagination.offset)
+            .limit(user_pagination.limit)
         )
 
         result = await session.execute(stmt)

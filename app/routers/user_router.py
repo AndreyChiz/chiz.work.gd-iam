@@ -10,7 +10,8 @@ from app.exceptions import NotFoundException, TokenInvalidException, UnactiveExc
 from app.services.auth import auth_service
 from app.services.user import (
     OutGetUserSchema,
-    UserQueryParams,
+    UserFilterDep,
+    UserPaginationDep,
     user_crud,
 )
 
@@ -22,12 +23,14 @@ router = APIRouter()
 @router.get("", response_model=list[OutGetUserSchema])
 async def get_users(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
-    query: Annotated[UserQueryParams, Depends()],
+    filters: Annotated[UserFilterDep, Depends()],
+    pagination: Annotated[UserPaginationDep, Depends()],
 ):
-    return await user_crud.get_many(session=session, query=query)
-
-
-
+    return await user_crud.get_many(
+        session=session,
+        user_filters=filters,
+        user_pagination=pagination,
+    )
 
 
 def get_current_user_data_from_token(
@@ -58,7 +61,6 @@ async def get_auth_user(
     if not user.is_active:
         raise UnactiveException
     return user
-    
 
 
 @router.get("/me", response_model=OutGetUserSchema)
