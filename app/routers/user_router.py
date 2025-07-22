@@ -19,6 +19,10 @@ http_bearer = HTTPBearer()
 
 router = APIRouter()
 
+# Just for not foget :-) ... maybe use later TODO
+# think i could use this alias for filters
+# UserFilterDepDep = Annotated[UserFilterDep, Depends()]
+
 
 @router.get("", response_model=list[OutGetUserSchema])
 async def get_users(
