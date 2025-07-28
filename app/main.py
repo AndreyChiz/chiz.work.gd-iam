@@ -7,6 +7,7 @@ from app.database import db_master
 from app.config import settings
 from app.routers import user_router, auth_router
 
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -21,6 +22,13 @@ app = FastAPI(
     root_path=settings.api.prefix,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # или укажите список доменов
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Routes
 # v1
