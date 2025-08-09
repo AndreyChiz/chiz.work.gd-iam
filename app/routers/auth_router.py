@@ -2,7 +2,7 @@ from typing import Annotated
 
 import jwt
 from fastapi import APIRouter, Cookie, Depends, Response, status
-from models import User
+
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -76,14 +76,14 @@ async def login(
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=True,
+        # secure=True,
         samesite="lax",
     )
 
     return TokenResponseSchema(access_token=access_token)
 
 
-@router.post("/auth/refresh") # TODO CHECK!!!!!!!!
+@router.post("/auth/refresh")  # TODO CHECK!!!!!!!!
 async def refresh_token(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     refresh_token: str = Cookie(None),
@@ -92,15 +92,14 @@ async def refresh_token(
         raise NoRefreshToken
 
     try:
+        print(refresh_token)
         payload = auth_service.token.decode_payload(refresh_token)
-        if payload.get("type") != "refresh":
-            raise RefreshTokenInvalidException
     except jwt.ExpiredSignatureError:
         raise RefreshTokenExpireException
     except jwt.PyJWTError:
         raise RefreshTokenInvalidException
     try:
-        user_id = int(payload.get("sub"))
+        user_id = int(payload.get("sub"))  # type: ignore
     except TypeError:
         raise RefreshTokenInvalidException
 
@@ -108,7 +107,7 @@ async def refresh_token(
         raise UnautorisedException
     if not user.is_active:
         raise UnactiveException
-   
+
     new_access_token = auth_service.create_access_token(user)
 
     return TokenResponseSchema(access_token=new_access_token)

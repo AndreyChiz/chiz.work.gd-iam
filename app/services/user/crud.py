@@ -14,7 +14,7 @@ class UserCRUD:
         return user
 
     async def get_by_id(self, session: AsyncSession, user_id: int) -> User | None:
-        stmt = select(User).where(User.username == user_id)
+        stmt = select(User).where(User.id == user_id)
         result = await session.execute(stmt)
         user = result.scalar_one_or_none()
         return user
