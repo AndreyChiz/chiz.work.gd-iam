@@ -1,24 +1,23 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, status
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import db_master
+from app.exceptions import (
+    AlreadyExistException,
+    UnactiveException,
+    UnautorisedException,
+)
 from app.services.auth import (
-    LoginFormSchema,
     InRegisterSchema,
+    LoginFormSchema,
     OutRegisterSchema,
     TokenResponseSchema,
     auth_service,
 )
 from app.services.user import user_crud
-from app.exceptions import (
-    UnautorisedException,
-    UnactiveException,
-    AlreadyExistException,
-)
-
 
 router = APIRouter()
 
@@ -51,8 +50,11 @@ async def register_user(
     response_model=TokenResponseSchema,
 )
 async def login(
+    response: Response,
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     form: LoginFormSchema = Depends(),
+    
+
 ):
     username = form.username
     password = form.password
@@ -64,6 +66,15 @@ async def login(
     if not user.is_active:
         raise UnactiveException
 
-    access_token = auth_service.create_jwt_token(user)
+    access_token = auth_service.create_acces_token(user)
+    refresh_token = auth_service.create_refresh_token(user)
+
+    response.set_cookie(
+    key="refresh_token",
+    value=refresh_token,
+    httponly=True,
+    secure=True,  
+    samesite="lax",  
+)
 
     return TokenResponseSchema(access_token=access_token)

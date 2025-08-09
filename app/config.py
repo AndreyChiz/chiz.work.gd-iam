@@ -1,6 +1,7 @@
 from pathlib import Path
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from datetime import timedelta
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -51,6 +52,7 @@ class AuthConfig(BaseModel):
     public_key_path: Path = BASE_DIR / "services" / "auth" / ".keys" / "jwt-public.pem"
     algorithm: str = "RS256"
     access_token_expire_minets: int = 20
+    refresh_token_expire: timedelta = timedelta(days=1, hours=2, minutes=3)
 
 
 class DatabaseConfig(BaseModel):

@@ -52,10 +52,10 @@ class AuthService:
         self.token = TokenMaster()
         self.password = PasswordMAster()
 
-    def create_jwt_token(
+    def _create_jwt_token(
         self,
         user: User,
-        expire_minutes: int = settings.auth.access_token_expire_minets,
+        expire_minutes: int = 10,
         expire_timedelta: timedelta | None = None,
     ):
         now = datetime.now(timezone.utc)
@@ -72,6 +72,14 @@ class AuthService:
                 "exp": expire,
             }
         )
+    def create_acces_token(self, *args, **kwargs):
+        kwargs["expire_minutes"] = settings.auth.access_token_expire_minets  
+        return self._create_jwt_token(*args, **kwargs)
+
+    def create_refresh_token(self, *args, **kwargs):
+        kwargs["expire_timedelta"] = settings.auth.refresh_token_expire
+        return self._create_jwt_token(*args, **kwargs)
+
 
 
 auth_service = AuthService()
