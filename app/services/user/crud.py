@@ -7,8 +7,14 @@ from .schema import UserFilterDep, UserPaginationDep
 class UserCRUD:
     """Класс для работы с пользователями"""
 
-    async def get(self, session: AsyncSession, username: str) -> User | None:
+    async def get_by_name(self, session: AsyncSession, username: str) -> User | None:
         stmt = select(User).where(User.username == username)
+        result = await session.execute(stmt)
+        user = result.scalar_one_or_none()
+        return user
+
+    async def get_by_id(self, session: AsyncSession, user_id: int) -> User | None:
+        stmt = select(User).where(User.username == user_id)
         result = await session.execute(stmt)
         user = result.scalar_one_or_none()
         return user

@@ -72,14 +72,14 @@ class AuthService:
                 "exp": expire,
             }
         )
-    def create_acces_token(self, *args, **kwargs):
-        kwargs["expire_minutes"] = settings.auth.access_token_expire_minets  
+
+    def create_access_token(self, *args, **kwargs):
+        kwargs["expire_minutes"] = settings.auth.access_token_expire_minets
         return self._create_jwt_token(*args, **kwargs)
 
     def create_refresh_token(self, *args, **kwargs):
         kwargs["expire_timedelta"] = settings.auth.refresh_token_expire
         return self._create_jwt_token(*args, **kwargs)
-
 
 
 auth_service = AuthService()

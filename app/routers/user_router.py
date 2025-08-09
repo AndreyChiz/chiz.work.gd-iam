@@ -6,7 +6,11 @@ from jwt.exceptions import ExpiredSignatureError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import db_master
-from app.exceptions import NotFoundException, TokenInvalidException, UnactiveException
+from app.exceptions import (
+    NotFoundException,
+    AccessTokenInvalidException,
+    UnactiveException,
+)
 from app.services.auth import auth_service
 from app.services.user import (
     OutGetUserSchema,
@@ -44,7 +48,7 @@ def get_current_user_data_from_token(
     try:
         payload = auth_service.token.decode_payload(token)
     except ExpiredSignatureError:
-        raise TokenInvalidException
+        raise AccessTokenInvalidException
 
     return payload
 
