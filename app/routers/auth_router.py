@@ -80,7 +80,9 @@ async def login(
         samesite="lax",
     )
 
-    return TokenResponseSchema(access_token=access_token)
+    return TokenResponseSchema(
+        access_token=access_token
+    )
 
 
 @router.post("/auth/refresh")  # TODO CHECK!!!!!!!!
@@ -110,4 +112,7 @@ async def refresh_token(
 
     new_access_token = auth_service.create_access_token(user)
 
-    return TokenResponseSchema(access_token=new_access_token)
+    return TokenResponseSchema(
+
+        access_token=new_access_token,
+    )

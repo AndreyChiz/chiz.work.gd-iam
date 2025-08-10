@@ -50,7 +50,10 @@ class InRegisterSchema(BaseModel):
 class OutRegisterSchema(BaseModel):
     id: int
     username: str
-    created_at: datetime
+    is_admin: bool
+    is_active: bool
+
+    
 
 
 
@@ -65,5 +68,10 @@ class LoginFormSchema:
 
 
 class TokenResponseSchema(BaseModel):
+    
     access_token: str
     token_type: str = "bearer"
+    
+    
+
+    

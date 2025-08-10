@@ -57,12 +57,16 @@ async def get_auth_user(
     session: Annotated[AsyncSession, Depends(db_master.session_getter)],
     user_data_from_token: dict = Depends(get_current_user_data_from_token),
 ):
-    username = str(user_data_from_token.get("username"))
+    user_id_from_token_raw: int = user_data_from_token.get("sub")
+    try:
+       user_id_from_token = int(user_id_from_token_raw)
+    except (TypeError, ValueError):
+        raise AccessTokenInvalidException
 
     if not (
-        user := await user_crud.get(
+        user := await user_crud.get_by_id(
             session,
-            username,
+            user_id=user_id_from_token,
         )
     ):
         raise NotFoundException

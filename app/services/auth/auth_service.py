@@ -68,6 +68,7 @@ class AuthService:
             data={
                 "sub": str(user.id),
                 "username": user.username,
+                "is_admin": user.is_admin,
                 "iat": now,
                 "exp": expire,
             }
