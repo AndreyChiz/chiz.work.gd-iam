@@ -1,39 +1,64 @@
-# IAM Service (HTTP + AMQP)
+# chiz.work.gd-iam 🔐
 
-A centralized identity and access management (IAM) microservice that provides:
+[![Status](https://img.shields.io/badge/status-in%20development-yellow)](#)
 
-- User registration and login via HTTP and AMQP
-- JWT and session-based authentication
-- Role-based access control (RBAC)
-- Admin panel for managing users and permissions
-- Swagger UI for API interaction and testing
+> A centralized Identity and Access Management (IAM) microservice with HTTP + AMQP support.  
+> Проект находится в активной разработке.
 
-## Features
+---
 
-- 🔐 Authentication via HTTP (REST) and AMQP (MQTT-style)
-- 🧾 JSON Web Token (JWT) and session storage (Redis)
-- ⚙️ Admin UI (optional)
-- 📚 Auto-generated OpenAPI docs (Swagger UI)
+## 💡 Описание
 
-## Requirements
+`chiz.work.gd-iam` — это микросервис для централизованного управления пользователями и доступом.  
+Он предоставляет:
 
-- Python 3.12+
-- Redis
-- MQTT broker 
+- Регистрацию и авторизацию пользователей через HTTP и AMQP  
+- JWT и сессионную аутентификацию  
+- Ролевая модель доступа (RBAC)  
+- Админ-панель для управления пользователями и правами  
+- Swagger UI для тестирования и взаимодействия с API  
 
-## Quickstart
+---
 
-1. Create Postgres database instance with settings like in app/config.py 
-2. Uncomment vars in app/config.py or add .env with each vars
-3. 
+## ⚙️ Основные возможности
+
+- 🔐 Аутентификация через HTTP (REST) и AMQP (MQTT-style)  
+- 🧾 JSON Web Token (JWT) и сессии с хранением в Redis  
+- ⚙️ Админ-панель (опционально)  
+- 📚 Автоматическая генерация документации OpenAPI (Swagger UI)  
+
+---
+
+## 🛠 Требования
+
+- Python 3.12+  
+- Redis  
+- MQTT broker  
+- Postgres (для хранения данных пользователей)  
+
+---
+
+## 🚀 Быстрый старт
+
 ```bash
-cp .env.template .env && \
-uv sync && \
-docker-compose up -d && \
-source .venv/bin/activate && \
-alembic upgrade head && \
-mkdir /app.services/app/.keys
+# Создать базу данных Postgres согласно настройкам в app/config.py
+
+# Скопировать шаблон .env
+cp .env.template .env
+
+# Запустить docker-compose
+docker-compose up -d
+
+# Активировать виртуальное окружение
+source .venv/bin/activate
+
+# Применить миграции Alembic
+alembic upgrade head
+
+# Создать ключи для JWT
+mkdir -p /app.services/app/.keys
 openssl genrsa -out /app.services/app/.keys/jwt-private.pem 2048
-openssl rsa -in jwt-private.pem -outform PEM -pubout -out /app.services/app/.keys/jwt-public.pem
+openssl rsa -in /app.services/app/.keys/jwt-private.pem -outform PEM -pubout -out /app.services/app/.keys/jwt-public.pem
+
+# Запуск FastAPI в dev режиме
 uv run fastapi dev
-```
