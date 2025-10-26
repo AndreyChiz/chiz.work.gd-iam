@@ -1,28 +1,43 @@
 [project]
 name = "iam-service-http-imqp"
 version = "0.1.0"
-description = "Add your description here"
+description = "IAM service over HTTP and AMQP"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "asyncpg>=0.30.0",
-    "bcrypt>=4.3.0",
-    "fastapi[standard]>=0.115.13",
-    "orjson>=3.10.18",
-    "pydantic-settings>=2.10.1",
-    "pyjwt[crypto]>=2.10.1",
-    "sqlalchemy[asyncio]>=2.0.41",
+    # Основные зависимости приложения
+    "fastapi[standard]",
+    "uvicorn[standard]",
+    "gunicorn",
+    "sqlalchemy[asyncio]",
+    "asyncpg",
+    "bcrypt==5.0.0",
+    "orjson",
+    "pydantic-settings",
+    "pyjwt[crypto]",
 ]
 
 [dependency-groups]
 dev = [
-    "alembic[asyncio]>=1.16.2",
-    "pytest>=8.4.1",
-    "pytest-asyncio>=1.0.0",
-    "ruff>=0.12.2",
+    # Инструменты разработки
+    "alembic[asyncio]",
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = "."
 asyncio_mode = "auto"
 norecursedirs = ["pgdata"]
+
+[tool.uv]
+no-binary-package = [
+    "fastapi",
+    "uvicorn",
+    "gunicorn",
+    "sqlalchemy",
+    "asyncpg",
+    "pydantic-settings",
+    "pyjwt",
+]
