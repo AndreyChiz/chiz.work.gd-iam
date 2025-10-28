@@ -9,14 +9,14 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-editable
+    uv sync --locked --no-install-project --no-editable --no-group dev
 
 # Copy the project into the intermediate image
 ADD . /app
 
 # Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-editable --link-mode=copy
+    uv sync --locked --no-editable --link-mode=copy --no-group dev
 
 FROM python:3.12-slim
 
