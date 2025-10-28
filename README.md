@@ -61,4 +61,4 @@ openssl genrsa -out /app.services/app/.keys/jwt-private.pem 2048
 openssl rsa -in /app.services/app/.keys/jwt-private.pem -outform PEM -pubout -out /app.services/app/.keys/jwt-public.pem
 
 # Запуск FastAPI в dev режиме
-uv run fastapi dev
+./scripts/run.sh

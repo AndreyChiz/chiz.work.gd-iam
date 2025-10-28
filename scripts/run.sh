@@ -11,12 +11,20 @@ echo "📦 Using image: $IMAGE_NAME"
 
 export IMAGE_NAME
 
+# 🔹 Если задан реестр и креды, логинимся
+if [[ -n "$REGISTRY" && -n "$DOCKER_USER" && -n "$DOCKER_PASS" ]]; then
+    echo "🔐 Logging in to registry $REGISTRY as $DOCKER_USER"
+    echo "$DOCKER_PASS" | docker login "$REGISTRY" -u "$DOCKER_USER" --password-stdin
+    echo "✅ Login successful"
+else
+    echo "⚠️ Registry login skipped: REGISTRY, DOCKER_USER or DOCKER_PASS is empty"
+fi
+
 # 🔹 Поднимаем сервисы в фоне
-docker-compose up --build -d
+docker compose up --build -d
 
-# 🔹 Фолловим логи только во время сборки
-echo "📄 Following logs..."
-docker-compose logs -f --tail=50
+# 🔹 Показываем последние 50 строк логов после сборки
+echo "📄 Build logs:"
+docker compose logs --tail=50
 
-# 🔹 После отображения логов сборки можно отпустить контейнеры в фоне
 echo "✅ Docker-compose started successfully. Containers running in background."

@@ -5,7 +5,6 @@ set -e
 echo "🛠 Building Docker image: $IMAGE_NAME"
 
 export DOCKER_BUILDKIT=1
-ls -ls
 docker build \
     --file Dockerfile \
     --tag "$IMAGE_NAME" \

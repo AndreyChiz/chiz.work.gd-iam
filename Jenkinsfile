@@ -3,7 +3,7 @@ pipeline {
 
     options {
         timestamps()
-        timeout(time: 30, unit: 'MINUTES')
+        timeout(time: 20, unit: 'MINUTES')
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
                     def version = sh(script: "grep -E '^version\\s*=' pyproject.toml | sed 's/version\\s*=\\s*\"\\(.*\\)\"/\\1/'", returnStdout: true).trim()
 
                     IMAGE_NAME = "${name}:${version}"
-                    REGISTRY = "myregistry.example.com"
+                    REGISTRY = "reg.chiz.work.gd" // TODO: add to jenkins env
 
                     echo "🔹 IMAGE_NAME=${IMAGE_NAME}"
                     echo "🔹 REGISTRY=${REGISTRY}"
@@ -63,11 +63,16 @@ pipeline {
 
         stage('Run docker-compose') {
             steps {
-                script {
-                    echo "📦 Starting services with docker-compose..."
-                    sh """
-                        ./scripts/private_registry_push.sh
-                    """
+                withCredentials([usernamePassword(credentialsId: 'privat_docker_registry_cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+
+                    script {
+                        echo "📦 Starting services with docker-compose..."
+                        sh """
+                            export DOCKER_USER=${DOCKER_USER}
+                            export DOCKER_PASS=${DOCKER_PASS}
+                            ./scripts/run.sh
+                        """
+                    }
                 }
             }
         }
