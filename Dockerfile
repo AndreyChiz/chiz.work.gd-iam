@@ -9,7 +9,7 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-editable --no-group dev
+    uv sync --locked --link-mode=copy --no-install-project --no-editable --no-group dev
 
 # Copy the project into the intermediate image
 ADD . /app
