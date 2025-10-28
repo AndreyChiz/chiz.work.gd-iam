@@ -31,13 +31,3 @@ pythonpath = "."
 asyncio_mode = "auto"
 norecursedirs = ["pgdata"]
 
-[tool.uv]
-no-binary-package = [
-    "fastapi",
-    "uvicorn",
-    "gunicorn",
-    "sqlalchemy",
-    "asyncpg",
-    "pydantic-settings",
-    "pyjwt",
-]

@@ -1,14 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        REGISTRY = "myregistry.example.com"                  // твой приватный реестр
-        DOCKER_CRED = credentials('privat_docker_registry_cred')        // один Jenkins Credential
-        DOCKER_USER = "${DOCKER_CRED_USR}"                  // username из Credential
-        DOCKER_PASS = "${DOCKER_CRED_PSW}"                  // password из Credential
-        DOCKER_BUILDKIT = "1"
-    }
-
     options {
         timestamps()
         timeout(time: 30, unit: 'MINUTES')
@@ -23,37 +15,67 @@ pipeline {
             }
         }
 
-    stage('Set IMAGE_NAME') {
-        steps {
-            script {
-                def name = sh(script: "grep -E '^name\\s*=' pyproject.toml | sed 's/name\\s*=\\s*\"\\(.*\\)\"/\\1/'", returnStdout: true).trim()
-                def version = sh(script: "grep -E '^version\\s*=' pyproject.toml | sed 's/version\\s*=\\s*\"\\(.*\\)\"/\\1/'", returnStdout: true).trim()
-                env.IMAGE_NAME = "${name}:${version}"
-                echo "🔹 IMAGE_NAME=${env.IMAGE_NAME}"
+        stage('Set Variables') {
+            steps {
+                script {
+                    // читаем имя и версию из pyproject.toml
+                    def name = sh(script: "grep -E '^name\\s*=' pyproject.toml | sed 's/name\\s*=\\s*\"\\(.*\\)\"/\\1/'", returnStdout: true).trim()
+                    def version = sh(script: "grep -E '^version\\s*=' pyproject.toml | sed 's/version\\s*=\\s*\"\\(.*\\)\"/\\1/'", returnStdout: true).trim()
+
+                    IMAGE_NAME = "${name}:${version}"
+                    REGISTRY = "myregistry.example.com"
+
+                    echo "🔹 IMAGE_NAME=${IMAGE_NAME}"
+                    echo "🔹 REGISTRY=${REGISTRY}"
+                }
             }
         }
-}
-
-
 
         stage('Build Docker Image') {
             steps {
-                sh './scripts/build.sh'
+                script {
+                    echo "🛠 Building Docker image..."
+                    sh """
+                        export IMAGE_NAME=${IMAGE_NAME}
+                        export DOCKER_BUILDKIT=1
+                        ./scripts/build.sh
+                    """
+                }
             }
         }
 
         stage('Push Image to Registry') {
             steps {
-                sh './scripts/private_registry_push.sh'
+                withCredentials([usernamePassword(credentialsId: 'privat_docker_registry_cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    script {
+                        echo "📤 Pushing image to registry..."
+                        sh """
+                            export IMAGE_NAME=${IMAGE_NAME}
+                            export REGISTRY=${REGISTRY}
+                            export DOCKER_USER=${DOCKER_USER}
+                            export DOCKER_PASS=${DOCKER_PASS}
+                            ./scripts/private_registry_push.sh
+                        """
+                    }
+                }
             }
         }
 
-        stage('Clean Up') {
+        stage('Run docker-compose') {
             steps {
-                sh './scripts/cleanup.sh'
+                script {
+                    echo "📦 Starting services with docker-compose..."
+                    sh """
+                        ./scripts/private_registry_push.sh
+                    """
+                }
             }
         }
-    }
+
+
+
+        }
+
 
     post {
         always {

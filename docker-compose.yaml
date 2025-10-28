@@ -1,15 +1,8 @@
+version: "3.9"
 services:
-  postgres:
-    image: postgres:16-alpine3.19
-    container_name: iam_database
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      POSTGRES_DB: ${APP_CONFIG__DATABASE__NAME}
-      POSTGRES_USER: ${APP_CONFIG__DATABASE__USER}
-      POSTGRES_PASSWORD: ${APP_CONFIG__DATABASE__PASSWORD}
+  app:
+    image: "${IMAGE_NAME}"
     ports:
-      - "${APP_CONFIG__DATABASE__PORT:-5432}:5432"
- #   volumes:
- #     - ./pgdata:/var/lib/postgresql/data
+      - "8000:8000"
+    environment:
+      - ENV=dev
