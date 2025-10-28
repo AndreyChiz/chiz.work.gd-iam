@@ -16,7 +16,7 @@ ADD . /app
 
 # Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-editable
+    uv sync --locked --no-editable --link-mode=copy
 
 FROM python:3.12-slim
 

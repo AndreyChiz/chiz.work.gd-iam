@@ -12,12 +12,6 @@ echo "📦 Using image: $IMAGE_NAME"
 export IMAGE_NAME
 
 
-echo "🔐 Logging in to registry $REGISTRY as $DOCKER_USER"
-echo "$DOCKER_PASS" | docker login "$REGISTRY" -u "$DOCKER_USER" --password-stdin
-
-else
-    echo "⚠️ Registry login skipped: REGISTRY, DOCKER_USER or DOCKER_PASS is empty"
-fi
 
 # 🔹 Поднимаем сервисы в фоне
 docker compose up --build -d
