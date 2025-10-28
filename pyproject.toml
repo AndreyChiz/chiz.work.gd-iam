@@ -1,6 +1,6 @@
 [project]
 name = "iam-service-http-imqp"
-version = "0.1.0"
+version = "0.0.1a"
 description = "IAM service over HTTP and AMQP"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -15,12 +15,12 @@ dependencies = [
     "orjson",
     "pydantic-settings",
     "pyjwt[crypto]",
+    "alembic",
 ]
 
 [dependency-groups]
 dev = [
     # Инструменты разработки
-    "alembic[asyncio]",
     "pytest",
     "pytest-asyncio",
     "ruff",
@@ -30,4 +30,3 @@ dev = [
 pythonpath = "."
 asyncio_mode = "auto"
 norecursedirs = ["pgdata"]
-

@@ -11,11 +11,10 @@ echo "📦 Using image: $IMAGE_NAME"
 
 export IMAGE_NAME
 
-# 🔹 Если задан реестр и креды, логинимся
-if [[ -n "$REGISTRY" && -n "$DOCKER_USER" && -n "$DOCKER_PASS" ]]; then
-    echo "🔐 Logging in to registry $REGISTRY as $DOCKER_USER"
-    echo "$DOCKER_PASS" | docker login "$REGISTRY" -u "$DOCKER_USER" --password-stdin
-    echo "✅ Login successful"
+
+echo "🔐 Logging in to registry $REGISTRY as $DOCKER_USER"
+echo "$DOCKER_PASS" | docker login "$REGISTRY" -u "$DOCKER_USER" --password-stdin
+
 else
     echo "⚠️ Registry login skipped: REGISTRY, DOCKER_USER or DOCKER_PASS is empty"
 fi
