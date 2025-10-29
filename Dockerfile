@@ -21,13 +21,16 @@ COPY --from=builder --chown=app:app /app/.venv /app/.venv
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-ENTRYPOINT ["gunicorn"]
+ENTRYPOINT ["ls -la"]
 
-CMD [\
-    "-k", "uvicorn.workers.UvicornWorker",\
-    "main:app",\
-    "--bind", "0.0.0.0:8080",\
-    "--workers", "1",\
-    "--log-level", "debug",\
-    "--capture-output"\
-    ]
+
+# ENTRYPOINT ["gunicorn"]
+
+# CMD [\
+#     "-k", "uvicorn.workers.UvicornWorker",\
+#     "main:app",\
+#     "--bind", "0.0.0.0:8080",\
+#     "--workers", "1",\
+#     "--log-level", "debug",\
+#     "--capture-output"\
+#     ]
