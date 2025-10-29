@@ -25,7 +25,7 @@ ENTRYPOINT ["gunicorn"]
 
 CMD [\
     "-k", "uvicorn.workers.UvicornWorker",\
-    "app.main:app",\
+    "main:app",\
     "--bind", "0.0.0.0:8080",\
     "--workers", "1",\
     "--log-level", "debug",\
