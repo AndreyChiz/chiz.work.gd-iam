@@ -56,9 +56,9 @@ source .venv/bin/activate
 alembic upgrade head
 
 # Создать ключи для JWT
-mkdir -p /app.services/app/.keys
-openssl genrsa -out /app.services/app/.keys/jwt-private.pem 2048
-openssl rsa -in /app.services/app/.keys/jwt-private.pem -outform PEM -pubout -out /app.services/app/.keys/jwt-public.pem
+mkdir -p ./app.services/app/.keys
+openssl genrsa -out ./app.services/app/.keys/jwt-private.pem 2048
+openssl rsa -in ./app.services/app/.keys/jwt-private.pem -outform PEM -pubout -out ./app.services/app/.keys/jwt-public.pem
 
 # Запуск FastAPI в dev режиме
 ./scripts/run.sh

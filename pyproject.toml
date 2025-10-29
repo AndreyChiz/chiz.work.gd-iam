@@ -1,6 +1,6 @@
 [project]
 name = "iam-service-http-imqp"
-version = "0.0.1b"
+version = "0.0.1c"
 description = "IAM service over HTTP and AMQP"
 readme = "README.md"
 requires-python = ">=3.12"
